@@ -12,6 +12,10 @@ router.get('/signup',(req,res)=>{
     return res.render('signup');
 })
 
+router.get('/logout',(req,res)=>{
+    res.clearCookie("token").redirect('/');
+})
+
 router.post('/signup', async(req,res)=>{
     try {
         const { fullName, email, password } = req.body;
