@@ -13,19 +13,24 @@ router.get('/signup',(req,res)=>{
 })
 
 router.post('/signup', async(req,res)=>{
-    const {fullName,email,password} = req.body;
-    await User.create({
-        fullName,
-        email,
-        password
-    });
-    return res.redirect('/');
-})
+    try {
+        const { fullName, email, password } = req.body;
+        await User.create({
+            fullName,
+            email,
+            password
+        });
+        return res.redirect('/');
+    } catch (error) {
+        // Handle the error and pass it to the next middleware
+        return next(error);
+    }
+});
 
 router.post('/signin', async(req,res)=>{
     const {email,password} = req.body;
     try {
-        const token = User.matchPasswordAndGenerateToken(email,password);
+        const token = await User.matchPasswordAndGenerateToken(email,password);
         return res.cookie('token',token).redirect('/');
     } catch (error) {
         return res.render("signin",{
