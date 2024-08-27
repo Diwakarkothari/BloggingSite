@@ -15,7 +15,12 @@ function assignToken(user){
 
 function checkToken(token)
 {
-    return jwt.verify(token,key);
+    try {
+        return jwt.verify(token, key);
+    } catch (error) {
+        console.error('Token verification failed:', error.message);
+        throw new Error('Invalid token');
+    }
 }
 
 module.exports={

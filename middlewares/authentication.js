@@ -1,18 +1,19 @@
-const checkToken= require('../services/authentication')
+const {checkToken}= require('../services/authentication')
 function checkForAuthentication(cookiename)
 {
     return (req,res,next)=>{
         const value = req.cookies[cookiename];
+        console.log("token "+value);
         if(!value)
         {
             return next(); 
         }
 
-        try {
-            const payload = checkToken(value);
-            req.user=payload;
-            res.locals.user=payload;
-        } catch (error) {   }
+        const payload = checkToken(value);
+        console.log('payload: ',payload);
+        req.user=payload;
+        res.locals.user = req.user;
+            // console.log('Cookies:', req.cookies);
         return next();
     }
 }
